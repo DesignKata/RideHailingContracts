@@ -4,7 +4,7 @@ package com.designkata.ridehailing.proto;
 
 option java_multiple_files = true;
 option java_package = "com.designkata.ridehailing.proto";
-option java_outer_classname = "";
+option java_outer_classname = "CommonMessages";
 
 message Location {
   string name = 1;
