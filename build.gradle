@@ -1,8 +1,10 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.google.protobuf' version '0.9.4'
 }
 
-group = 'com.elementaryspaceship'
+group = 'com.designsvadhyaya'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -10,10 +12,30 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.google.protobuf:protobuf-java:3.24.0'
+
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.24.0'
+    }
+}
+
+shadowJar {
+    archiveClassifier.set('')
+    mergeServiceFiles()
+}
+
+jar {
+    enabled = false
 }
 
 test {
     useJUnitPlatform()
 }
+
+// Make the build task depend on the shadowJar task
+build.dependsOn shadowJar
