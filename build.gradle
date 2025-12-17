@@ -2,9 +2,10 @@ plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'com.google.protobuf' version '0.9.4'
+    id 'maven-publish'
 }
 
-group = 'com.designsvadhyaya'
+group = 'com.designkata'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -39,3 +40,26 @@ test {
 
 // Make the build task depend on the shadowJar task
 build.dependsOn shadowJar
+
+publishing {
+    publications {
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
+
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = url "maven.pkg.github.com{project.group}/${project.name}"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
